@@ -2,18 +2,6 @@
 
 Este proyecto tiene como objetivo realizar un **análisis exploratorio de los datos** relacionados con las campañas de marketing directo de una institución bancaria portuguesa. Las campañas de marketing se basaron en llamadas telefónicas, y el análisis está orientado a comprender las interacciones con los clientes, sus características y la tasa de conversión a productos bancarios (depósitos a plazo).
 
-## Objetivo del Proyecto
-
-El objetivo principal del proyecto es aplicar los conocimientos adquiridos en el módulo "Python for Data" para realizar un análisis exploratorio de datos utilizando **Python**, **Pandas** y **Visual Studio Code**. Se busca transformar, limpiar, analizar y visualizar los datos con el fin de extraer insights útiles para la toma de decisiones en el contexto de las campañas de marketing bancarias.
-
-## Requisitos del Proyecto
-
-Para completar este proyecto, se deben cubrir los siguientes puntos:
-- **Transformación y limpieza de los datos**: Identificar y corregir datos erróneos, manejar los datos faltantes y realizar las modificaciones adecuadas en las columnas y tipos de datos.
-- **Análisis descriptivo de los datos**: Utilizar estadísticas descriptivas para describir las principales características de los datos, como medias, medianas, desviaciones estándar, correlaciones, etc.
-- **Visualización de los datos**: Crear gráficos significativos utilizando librerías como `matplotlib`, `seaborn`, etc., para ilustrar patrones y relaciones importantes.
-- **Informe explicativo**: Presentar un informe con los hallazgos y conclusiones basadas en el análisis realizado (README.md).
-
 ## Herramientas Utilizadas
 
 Este proyecto ha sido realizado utilizando las siguientes herramientas:
@@ -60,14 +48,14 @@ Los datos utilizados en este proyecto provienen de dos fuentes principales:
     - `NumWebVisitsMonth`: Indica la cantidad de visitas mensuales del cliente al sitio web de la empresa.
     - `ID`: Identificador único del cliente.
 
-## Método de Entrega
+## Archivos
 
-El proyecto será entregado a través de un repositorio público de GitHub. El repositorio debe contener los siguientes archivos y carpetas:
+ El repositorio contiene los siguientes archivos y carpetas:
 
-- **Archivo `README.md`**: Este archivo, que describe los pasos seguidos durante el proyecto y el informe del análisis.
-- **Carpeta `data/`**: Contendrá los archivos de datos originales ('original_data') y transformados ('datos_transformados').
-- **Carpeta `src/`**: Contendrá el archivo de soporte `sp.limpieza.py`. donde pongo unas funciones usadas en el EDA. 
-- **Archivo `eda_python.py`**: Contendrá el código del análisis y la visualización de los datos.
+- **Archivo `README.md`**: Descripción de los pasos seguidos durante el proyecto y el informe del análisis.
+- **Carpeta `data/`**: Contiene los archivos de datos originales (carpeta 'original_data') y transformados (carpeta 'datos_transformados').
+- **Carpeta `src/`**: Contiene el archivo de soporte `sp.limpieza.py`. donde hay funciones usadas en el EDA. 
+- **Archivo `eda_python.py`**: Contiene el código del análisis y la visualización de los datos.
 
 ## Pasos del Proyecto
 
