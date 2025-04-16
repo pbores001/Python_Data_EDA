@@ -96,8 +96,8 @@ Se guardaron estos archivos generados
 Porcentaje de Aceptación: 4.59% de los clientes aceptaron la oferta. Lo que indica que la campaña del banco no fue exitosa. 
 
 1. **Edad de los Clientes:**
-   - La edad promedio de los clientes después del ajuste de valores atípicos es de aproximadamente 39.8 años.
-   - Se detectaron valores de edad incorrectos (0 años), los cuales fueron reemplazados por la mediana (39 años).
+   - La edad promedio de los clientes después del ajuste de valores atípicos es de aproximadamente 39.6 años.
+   - Se detectaron varios valores nulos, los cuales fueron reemplazados por la mediana (38 años).
    - Los clientes se distribuyen mayormente entre 19 y 61 años, sin sesgos significativos.
 
 2. **Duración de la última interacción:**
