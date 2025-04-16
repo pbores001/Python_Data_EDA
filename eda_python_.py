@@ -107,6 +107,12 @@ df_bank.head(3)
 
 
 #Eliminación de columnas irrelevantes de los dataframes
+
+#Las columnas 'latitude' y 'longitude' las eliminamos ya que el análisis trata sobre campañas de marketing telefónicas
+#de una institución bancaria para promocionar depósitos a plazo.
+#Nos centramos en comportamientos de respuesta, canales de contacto, y características personales o económicas.
+#Además para poder un análisis con variables geográficas harían falta más referencias geográficas o contexto (como ciudad, región),
+#como saber cada punto del mapa que representa (urbano, rural, norte, sur...).
 if 'latitude' in df_bank.columns and 'longitude' in df_bank.columns:
     df_bank = df_bank.drop(columns=['latitude', 'longitude'])
 
@@ -218,11 +224,18 @@ for col in str_float:
 df_bank.dtypes
 
 
+#Imputamos los nulos de Age por la mediana por ser una medida robusta frente a outliers y
+# adecuada para variables numéricas con posible sesgo.
+df_bank['Age'] = df_bank['Age'].fillna(df_bank['Age'].median())
 
+
+#Ahora podemos pasar los valores de Age y Nr_Employed a int. No podíamos convertir la variable Age a integer float NaN a integer
 str_int = ['Age', 'Nr_Employed']
 
 for col in str_int:
-    df_bank[col] = df_bank[col].fillna(0).apply(lambda x: int(x))
+    df_bank[col] = df_bank[col].apply(lambda x: int(x))
+
+
 
 df_bank.dtypes
 
@@ -246,7 +259,8 @@ df_bank["Product_Or_Service"] = df_bank["Product_Or_Service"].map({"yes": 1, "no
 
 
 
-
+# Imputamos los valores nulos en 'Education' con 'unknown' porque se trata de una variable categórica, 
+# y no queremos eliminar registros ni asignar un valor arbitrario que distorsione el análisis.
 df_bank['Education'].fillna('unknown', inplace=True)
 
 
@@ -278,7 +292,8 @@ print(df_bank['Education'].unique())
 
 #Crear nuevas columnas a partir de la columna de Date
 
-#Sacamos año de interaccion con el cliente durante la campaña
+# Creamos variables temporales derivadas de 'Date' para analizar patrones de contacto por año.
+# Esto puede ayudarnos a identificar cuales fueron los años más efectivos para la campaña.
 df_bank['Contact_Year'] = df_bank['Date'].dt.year
 df_bank['Contact_Year'] = df_bank['Contact_Year'].fillna(0).apply(lambda x: int(x))
 
@@ -295,7 +310,8 @@ df_bank['Contact_Day'] = df_bank['Date'].dt.day_name()
 df_bank.dtypes
 
 
-
+# Creamos variables temporales derivadas de 'Date' para analizar patrones de contacto por trimestre.
+# Esto puede ayudarnos a identificar periodos más efectivos para la campaña.
 df_bank['Quarter'] = df_bank['Date'].dt.quarter
 df_bank['Quarter'] = df_bank['Quarter'].fillna(0).apply(lambda x: int(x))
 
@@ -316,7 +332,8 @@ fecha_limite = pd.to_datetime('2014-12-31')
 # Filtrar solo las filas donde la fecha de antigüedad es antes de 2015
 df_customer = df_customer[df_customer['Customer_Seniority'] < '2015-01-01']
 
-# Calcular la antigüedad en días hasta el 31 de diciembre de 2014
+# Calculamos los días de antigüedad de los clientes desde su fecha de alta hasta el 31-12-2014 
+# porque es el periodo de tiempo en el que se desarrollaron las campañas de marketing.
 df_customer['Customer_Seniority_Days'] = (fecha_limite - df_customer['Customer_Seniority']).dt.days
 
 # Ver los primeros resultados
@@ -399,16 +416,6 @@ df_inner.sample(4)
 #Ver estadísticas numéricas
 df_inner.describe().T
 
-print(df_inner['Income'].describe())
-
-print(df_inner['Rate_Change_Employment'].describe())
-
-print(df_inner['Euribor_3_Months'].describe())
-
-print(df_inner['Numwebvisitsmonth'].describe())
-
-print(df_inner['Customer_Seniority_Days'].describe())
-
 #Ver estadísticas categóricas
 df_inner.describe(include='O').T
 
@@ -445,42 +452,28 @@ for j in range(i + 1, len(axes)):  # Ocultar gráficos vacíos
 plt.tight_layout()
 plt.show()
 
+#Aquí vemos que el porcentaje de nulos de las columnas con nulos son bajos, que no existen columnas con nulos de mas del 10% de umbral. 
+high_null_cols, low_null_cols = sp.calcular_solo_col_nul(df_inner)
 
-age_stats = sp.medidas_tendencia_dispersion(df_inner, 'Age')
+print(df_inner['Age'].describe())
 
+df_inner['Age'].median()
 
-#Sacar el porcentae de valores '0' en Age
-num_ceros = (df_inner['Age'] == 0).sum()
-total_datos = df_inner['Age'].shape[0]
-porcentaje_ceros = (num_ceros / total_datos) * 100
+print(df_inner['Cons_Price_Idx'].describe())
 
-print(f"Valores 0 en 'Age': {num_ceros}")
-print(f"Porcentaje de valores 0 en 'Age': {porcentaje_ceros:.2f}%")
+print(df_inner['Euribor_3_Months'].describe())
 
+print(df_inner['Contact_Month'].describe())
 
+print(df_inner['Quarter'].describe())
 
-#Como el porcentaje de valores 0 en edad es es moderado entre 5%-15%, vamos a imputarlos por la mediana.
-df_inner['Age'] = df_inner['Age'].replace(0, np.nan)
-df_inner['Age'].fillna(df_inner['Age'].median(), inplace=True)
+print(df_inner['Income'].describe())
 
+print(df_inner['Numwebvisitsmonth'].describe())
 
-age_stats = sp.medidas_tendencia_dispersion(df_inner, 'Age')
+print(df_inner['Total_Children'].describe())
 
-cons_price_idx_stats = sp.medidas_tendencia_dispersion(df_inner, 'Cons_Price_Idx')
-
-euribor_3_months_stats = sp.medidas_tendencia_dispersion(df_inner, 'Euribor_3_Months')
-
-contact_month_stats = sp.medidas_tendencia_dispersion(df_inner, 'Contact_Month')
-
-quarter_stats = sp.medidas_tendencia_dispersion(df_inner, 'Quarter')
-
-income_stats = sp.medidas_tendencia_dispersion(df_inner, 'Income')
-
-numwebvisitsmonth_stats = sp.medidas_tendencia_dispersion(df_inner, 'Numwebvisitsmonth')
-
-total_children_stats = sp.medidas_tendencia_dispersion(df_inner, 'Total_Children')
-
-customer_seniority_days_stats = sp.medidas_tendencia_dispersion(df_inner, 'Customer_Seniority_Days')
+print(df_inner['Customer_Seniority_Days'].describe())
 
 
 ### 3.3. Gráficos de barras para variables categóricas
